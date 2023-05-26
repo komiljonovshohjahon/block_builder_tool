@@ -6,10 +6,19 @@ final _router = GoRouter(routes: [
   GoRoute(path: "/", builder: (context, state) => const HomePage()),
 ]);
 
-void main() => runApp(const BlockBuilderApp());
+void main() {
+  // debugRepaintRainbowEnabled = true;
+  CreategoRunner.run(
+      params:
+          const RunnerParams(child: BlockBuilderApp(), size: Size(1080, 720)));
+}
 
 class BlockBuilderApp extends StatelessWidget {
   const BlockBuilderApp({Key? key}) : super(key: key);
+
+  (int, String) getDate() {
+    return (1, "2");
+  }
 
   @override
   Widget build(BuildContext context) {
