@@ -110,10 +110,9 @@ packages:
   design_grid:
     dependency: "direct main"
     description:
-      name: design_grid
-      sha256: "8e41360febb1f95094a554e2f577667ee629c7c6db03ce01947842e3658b4ae6"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../design_grid-1.0.2"
+      relative: true
+    source: path
     version: "1.0.2"
   dropdown_button2:
     dependency: transitive

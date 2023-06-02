@@ -5,9 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/dashboard.dart';
 
-class VirtualGridBlock extends StatelessWidget {
+class VirtualGridBlock extends StatefulWidget {
   const VirtualGridBlock({super.key});
 
+  @override
+  State<VirtualGridBlock> createState() => _VirtualGridBlockState();
+}
+
+class _VirtualGridBlockState extends State<VirtualGridBlock> {
   @override
   Widget build(BuildContext context) {
     return CreategoReduxStoreConnector<CreategoAppState,
@@ -21,6 +26,7 @@ class VirtualGridBlock extends StatelessWidget {
           return RepaintBoundary(
             child: Scaffold(
               appBar: AppBar(
+                title: Text("Virtual Grid"),
                 actions: [
                   IconButton(
                       tooltip: "Enable edit mode",
@@ -35,66 +41,63 @@ class VirtualGridBlock extends StatelessWidget {
                       icon: const Icon(Icons.photo_size_select_large_sharp)),
                 ],
               ),
-              body: Center(
-                // child: ResponsiveDesignGridConfig(
-                //   theme: const ResponsiveDesignGridThemeData(
-                //     columns: 32,
-                //   ),
-                //   child: ResponsiveDesignGridDebugOverlay(
-                //     enableControls: kDebugMode,
-                //     child: ResponsiveDesignGrid(
-                //       children: [
-                //         ResponsiveDesignGridRow(children: [
-                //           ResponsiveDesignGridItem(
-                //             columns: const ResponsiveDesignGridColumns(
-                //               small: 32,
-                //               // medium: 20,
-                //               // large: 28,
-                //               // extraLarge: 32,
-                //             ),
-                //             child: Container(
-                //               child: const TextField(
-                //                 decoration: InputDecoration(
-                //                   enabledBorder: OutlineInputBorder(
-                //                       borderSide: BorderSide(
-                //                           color: Colors.blue, width: 4)),
-                //                 ),
-                //               ),
-                //             ),
-                //           )
-                //         ])
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                child: Container(
-                  color: Colors.grey[300],
-                  width: width,
-                  height: height,
-                  child: Dashboard<BlockLayoutItemModel>(
-                    horizontalSpace: 0,
-                    verticalSpace: 0,
-                    slotCount: width ~/ 10,
-                    editModeSettings: EditModeSettings(),
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (item) {
-                      return DashboardItemWidget(
-                        item: item,
-                        child: RepaintBoundary(
-                          child: DecoratedBox(
-                            position: DecorationPosition.foreground,
-                            decoration: BoxDecoration(
-                              color: item.identifier ==
-                                      state.selectedItem?.identifier
-                                  ? Colors.white.withOpacity(.3)
-                                  : null,
+              body: SizedBox(
+                width: width,
+                height: height,
+                child: ResponsiveDesignGridConfig(
+                  theme: const ResponsiveDesignGridThemeData(
+                    columns: 10,
+                    gridPadding: 0,
+                    columnSpacing: 30, // mentioned as [gutter] in figma
+                  ),
+                  child: ResponsiveDesignGridDebugOverlay(
+                    enableControls: kDebugMode,
+                    child: ResponsiveDesignGrid(
+                      children: [
+                        ResponsiveDesignGridRow(children: [
+                          ResponsiveDesignGridItem(
+                            columns:
+                                const ResponsiveDesignGridColumns(small: 12),
+                            child: Container(
+                              color: Colors.grey[300],
+                              width: width,
+                              height: height,
+                              child: Dashboard<BlockLayoutItemModel>(
+                                horizontalSpace: 0,
+                                verticalSpace: 0,
+                                slotCount: width ~/ 10,
+                                editModeSettings: EditModeSettings(
+                                  panEnabled: true,
+                                  backgroundStyle:
+                                      const EditModeBackgroundStyle(
+                                    dualLineHorizontal: false,
+                                    dualLineVertical: false,
+                                    lineWidth: .2,
+                                    fillColor: Colors.transparent,
+                                    lineColor: Colors.pinkAccent,
+                                  ),
+                                  resizeCursorSide: 10,
+                                ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkToPlace: false,
+                                animateEverytime: false,
+                                slideToTop: false,
+                                itemBuilder: (item) {
+                                  return DashboardItemWidget(
+                                    item: item,
+                                    child: RepaintBoundary(
+                                      child: item.child,
+                                    ),
+                                  );
+                                },
+                                dashboardItemController:
+                                    state.dashboardController,
+                              ),
                             ),
-                            child: item.child,
-                          ),
-                        ),
-                      );
-                    },
-                    dashboardItemController: state.dashboardController,
+                          )
+                        ])
+                      ],
+                    ),
                   ),
                 ),
               ),
